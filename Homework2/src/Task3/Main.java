@@ -14,38 +14,34 @@ Task3
 
 public class Main {
     public static void main(String[] args) {
-
         System.out.println(fuzzySearch("car", "ca6$$#_rtwheel"));
         System.out.println(fuzzySearch("cwhl", "cartwheel"));
         System.out.println(fuzzySearch("cwhee", "cartwheel"));
         System.out.println(fuzzySearch("cartwheel", "cartwheel"));
         System.out.println(fuzzySearch("cwheeel", "cartwheel"));
         System.out.println(fuzzySearch("lw", "cartwheel"));
-
         assertFuzzySearch();
     }
 
-    public static boolean fuzzySearch(String searchText, String text) {
-        int textLength = text.length();
-        int searchTextLength = searchText.length();
-        if (searchTextLength > textLength) {
-            return false;
+    public static boolean fuzzySearch(String needle, String haystack) {
+        String[] charArray = needle.split("");
+        int[] indexArray = new int[charArray.length];
+        for (int i = 0; i < charArray.length; i++) {
+            if (i == 0) {
+                indexArray[i] = haystack.indexOf(charArray[i]);
+            } else {
+                indexArray[i] = haystack.indexOf(charArray[i], indexArray[i - 1] + 1);
+            }
         }
-        if (searchTextLength == textLength) {
-            return searchText.equals(text);
-        }
-        outer:
-        for (int i = 0, j = 0; i < searchTextLength; i++) {
-            int stCh = Character.codePointAt(searchText, i);
-            while (j < textLength) {
-                int tCh = Character.codePointAt(text, j++);
-                if (tCh == stCh) {
-                    continue outer;
+        int count = 1;
+        for (int i = 0; i < indexArray.length; i++) {
+            if (i < indexArray.length - 1) {
+                if (indexArray[i] < indexArray[i + 1]) {
+                    count++;
                 }
             }
-            return false;
         }
-        return true;
+        return count == indexArray.length;
     }
 
     public static void assertFuzzySearch() {
