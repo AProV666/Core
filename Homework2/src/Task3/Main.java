@@ -34,11 +34,9 @@ public class Main {
             }
         }
         int count = 1;
-        for (int i = 0; i < indexArray.length; i++) {
-            if (i < indexArray.length - 1) {
+        for (int i = 0; i < indexArray.length - 1; i++) {
                 if (indexArray[i] < indexArray[i + 1]) {
                     count++;
-                }
             }
         }
         return count == indexArray.length;
