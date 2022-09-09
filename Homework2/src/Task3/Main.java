@@ -24,6 +24,9 @@ public class Main {
     }
 
     public static boolean fuzzySearch(String needle, String haystack) {
+        if(needle == null || haystack == null) {
+            return false;
+        }
         String[] charArray = needle.split("");
         int[] indexArray = new int[charArray.length];
         for (int i = 0; i < charArray.length; i++) {
