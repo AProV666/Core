@@ -40,7 +40,7 @@ public class Main {
         }
     }
 
-    private static final Main.Person[] RAW_DATA = new Main.Person[]{
+    private static Main.Person[] RAW_DATA = new Main.Person[]{
             new Main.Person(0, "Harry"),
             new Main.Person(0, "Harry"), // дубликат
             new Main.Person(1, "Harry"), // тёзка
@@ -99,13 +99,15 @@ public class Main {
     }
 
     public static void printSortedPerson() {
+        if (RAW_DATA == null) {
+            return;
+        }
         Map<String, Long> map = Arrays.stream(RAW_DATA)
+                .filter(Objects::nonNull)
                 .distinct()
                 .sorted(Comparator.comparing(Main.Person::getId).thenComparing(Main.Person::getName))
                 .collect(Collectors.groupingBy(Main.Person::getName, Collectors.counting()));
 
-        for (Map.Entry<String, Long> entry : map.entrySet()) {
-            System.out.println("Key: " + entry.getKey() + "\n" + "Value: " + entry.getValue());
-        }
+        map.forEach((key, value) -> System.out.println("Key: " + key + "\n" + "Value: " + value));
     }
 }
